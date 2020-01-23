@@ -1,6 +1,5 @@
-require_relative "./config/environment.rb"
 require 'nokogiri'
-require 'colorize'
+# require 'colorize'
 
 class CommandLineInterface
   FICTION_PAGE_1_PATH = "https://www.thegreatestbooks.org/"
@@ -28,10 +27,10 @@ class CommandLineInterface
   end
 
   def display_books
-    Book.all.each do |student|
-      puts "#{book.name.upcase}".colorize(:blue)
-      puts "  author:".colorize(:light_blue) + " #{book.author}"
-      puts "  rank:".colorize(:light_blue) + " #{book.rank}"
+    Book.all.each do |book|
+      puts "#{book.name.upcase}"
+      puts "  author:" + " #{book.author}"
+      puts "  rank:" + " #{book.rank}"
     end
   end
 end

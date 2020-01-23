@@ -2,7 +2,7 @@ class Scaper
 
   def self.scrape_list_page(list_url)
     doc = Nokogiri::HTML(open(list_url))
-    book_cards = doc.css(#code to get to cards)
+    book_cards = doc.css()#code to get to cards)
     book_cards.collect do |book|
       book_hash = {}
       book_hash[:name] = book.css("").text #gets the name element
