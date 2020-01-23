@@ -3,7 +3,7 @@ class Book
 
   @@all = []
 
-  def intialize(list_info_hash)
+  def initialize(list_info_hash)
     add_attributes_from_hash(list_info_hash)
     self.class.all << self
   end
@@ -20,6 +20,10 @@ class Book
 
   def all
     @@all
+  end
+
+  def delete_all
+    @@all.clear
   end
 
 end
