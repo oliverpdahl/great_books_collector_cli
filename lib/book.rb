@@ -3,6 +3,10 @@ class Book
 
   @@all = []
 
+  def self.create_from_list(book_list_array)
+    book_list_array.each {|book_hash| self.new(book_hash)}
+  end
+
   def initialize(list_info_hash)
     add_attributes_from_hash(list_info_hash)
     self.class.all << self
@@ -18,7 +22,7 @@ class Book
     end
   end
 
-  def all
+  def self.all
     @@all
   end
 
