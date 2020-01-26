@@ -39,4 +39,40 @@ class CommandLineInterface
       puts "  rank:" + " #{book.rank}"
     end
   end
+
+  def ask_for_book
+    puts "Are there any books you would like to know the amazon information on?"
+    puts "Please input the rank, list again, or exit"
+    input = gets.strip
+    case input
+    when "list again"
+      display_books
+    when "exit"
+      goodbye
+    else
+      input_i = input.to_i
+      if input_i > 0
+        display_amazon_information(input_i)
+      else
+        puts "Please input a valid rank, list again, or exit"
+      end
+    end
+  end
+
+
+
+  def display_amazon_information(rank)
+    book = Books.find_by_rank(rank)
+    amazon_hash = Scraper.scrape_amazon_page(book.amazon_url)
+    book.add_amazon_attributes(amazon_hash)
+    puts "  price:" + " #{book.price}"
+    puts "  number of ratings:" + " #{book.ratings_count}"
+    puts "  rating:" + " #{book.rating}"
+    ask_for_book
+  end
+
+  def goodbye
+    puts "Thanks for using Great Books Collector"
+  end
+
 end

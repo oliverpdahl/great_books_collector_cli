@@ -30,4 +30,8 @@ class Book
     @@all.clear
   end
 
+  def self.find_by_rank(rank)
+    self.class.all.find {|book| book.rank == rank}
+  end
+
 end
