@@ -14,8 +14,8 @@ class CommandLineInterface
 
   def run
     make_books
-    # add_amazon_to_books
     display_books
+    ask_for_book
   end
 
   def make_books
@@ -23,13 +23,6 @@ class CommandLineInterface
       book_array = Scraper.scrape_list_page(link)
       Book.create_from_list(book_array)
     end
-    # book_array = [{name: "In Search of Lost Time", author: "Marcel Proust", rank: 1, amazon_url: "https://www.amazon.com/Swanns-Way-Search-Penguin-Classics/dp/0142437964?SubscriptionId=1RN7ZZ7D7SDQHR7TRJG2&tag=shanesherman-20&linkCode=xm2&camp=2025&creative=165953&creativeASIN=0142437964"},
-    #   {name: "Ulysses", author: "James Joyce", rank: 2, amazon_url: "https://www.amazon.com/Ulysses-Wordsworth-Classics-James-Joyce/dp/1840226358?SubscriptionId=1RN7ZZ7D7SDQHR7TRJG2&tag=shanesherman-20&linkCode=xm2&camp=2025&creative=165953&creativeASIN=1840226358"},
-    #   {name: "Don Quixote", author: "Miguel de Cervantes", rank: 3, amazon_url: "https://www.amazon.com/Don-Quixote-Miguel-Cervantes/dp/0060934344?SubscriptionId=1RN7ZZ7D7SDQHR7TRJG2&tag=shanesherman-20&linkCode=xm2&camp=2025&creative=165953&creativeASIN=0060934344"},
-    #   {name: "The Great Gatsby", author: "F. Scott Fitzgerald", rank: 4, amazon_url: "https://www.amazon.com/Great-Gatsby-F-Scott-Fitzgerald/dp/0743273567?SubscriptionId=1RN7ZZ7D7SDQHR7TRJG2&tag=shanesherman-20&linkCode=xm2&camp=2025&creative=165953&creativeASIN=0743273567"},
-    #   {name: "One Hundred Years of Solitude", author: "Gabriel Garcia Marquez", rank: 5, amazon_url: "https://www.amazon.com/Hundred-Solitude-Harper-Perennial-Classics/dp/0060883286?SubscriptionId=1RN7ZZ7D7SDQHR7TRJG2&tag=shanesherman-20&linkCode=xm2&camp=2025&creative=165953&creativeASIN=0060883286"}
-    #   ]
-    # Book.create_from_list(book_array)
   end
 
   def display_books
@@ -40,6 +33,12 @@ class CommandLineInterface
     end
   end
 
+  def display_book(book)
+    puts "#{book.name.upcase}"
+    puts "  author:" + " #{book.author}"
+    puts "  rank:" + " #{book.rank}"
+  end
+
   def ask_for_book
     puts "Are there any books you would like to know the amazon information on?"
     puts "Please input the rank, list again, or exit"
@@ -47,6 +46,7 @@ class CommandLineInterface
     case input
     when "list again"
       display_books
+      ask_for_book
     when "exit"
       goodbye
     else
@@ -59,15 +59,14 @@ class CommandLineInterface
     end
   end
 
-
-
   def display_amazon_information(rank)
-    book = Books.find_by_rank(rank)
+    book = Book.find_by_rank(rank)
     amazon_hash = Scraper.scrape_amazon_page(book.amazon_url)
     book.add_amazon_attributes(amazon_hash)
-    puts "  price:" + " #{book.price}"
-    puts "  number of ratings:" + " #{book.ratings_count}"
-    puts "  rating:" + " #{book.rating}"
+    display_book(book)
+    puts "  price:" + " $#{book.price}"
+    puts "  number of ratings:" + " #{book.ratings_count} ratings"
+    puts "  rating:" + " #{book.rating} out of 5 stars"
     ask_for_book
   end
 
