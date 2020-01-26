@@ -9,8 +9,11 @@ INSTALL INSTRUCTIONS
 Input the following commands to get started
 
 $ git clone git@github.com:Revilo12/great_books_collector_cli.git
+
 $ cd great_books_collector_cli
+
 $ bundle
+
 $ ruby ./bin/run
 
 CONTRIBUTORS GUIDE
