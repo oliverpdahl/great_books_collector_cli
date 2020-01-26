@@ -1,5 +1,5 @@
 class Book
-  attr_accessor :name, :author, :rank, :amazon_url, :price, :page_count, :rating, :ratings_count
+  attr_accessor :name, :author, :rank, :amazon_url, :price, :rating, :ratings_count
 
   @@all = []
 
@@ -18,7 +18,7 @@ class Book
 
   def add_attributes_from_hash(hash)
     hash.each do |key, value|
-      self.send("#{key}=", value)
+      self.send("#{key}=", value) if value
     end
   end
 
