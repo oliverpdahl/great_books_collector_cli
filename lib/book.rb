@@ -26,7 +26,7 @@ class Book
     @@all
   end
 
-  def delete_all
+  def self.delete_all
     @@all.clear
   end
 

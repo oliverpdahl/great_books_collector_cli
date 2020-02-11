@@ -14,7 +14,8 @@ class CommandLineInterface
 
   def run
     make_books
-    display_books
+    # display_books
+    display_books_alphabetical
     ask_for_book
   end
 
@@ -25,8 +26,8 @@ class CommandLineInterface
     end
   end
 
-  def display_books
-    Book.all.each do |book|
+  def display_books(books)
+    books.each do |book|
       puts "#{book.name.upcase}"
       puts "  author:" + " #{book.author}"
       puts "  rank:" + " #{book.rank}"
@@ -37,6 +38,11 @@ class CommandLineInterface
     puts "#{book.name.upcase}"
     puts "  author:" + " #{book.author}"
     puts "  rank:" + " #{book.rank}"
+  end
+
+  def display_books_alphabetical
+    alphabetical_books = Book.all.sort_by {|book| book.name}
+    display_books(alphabetical_books)
   end
 
   def ask_for_book
@@ -51,7 +57,7 @@ class CommandLineInterface
       goodbye
     else
       input_i = input.to_i
-      if input_i > 0
+      if input_i > 0 && input_i <= Book.all.length
         display_amazon_information(input_i)
       else
         puts "Please input a valid rank, list again, or exit"
@@ -61,8 +67,10 @@ class CommandLineInterface
 
   def display_amazon_information(rank)
     book = Book.find_by_rank(rank)
-    amazon_hash = Scraper.scrape_amazon_page(book.amazon_url)
-    book.add_amazon_attributes(amazon_hash)
+    if !book.price
+        amazon_hash = Scraper.scrape_amazon_page(book.amazon_url)
+        book.add_amazon_attributes(amazon_hash)
+    end
     display_book(book)
     puts "  price:" + " $#{book.price}"
     puts "  number of ratings:" + " #{book.ratings_count} ratings"

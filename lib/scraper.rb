@@ -1,4 +1,3 @@
-require_relative '../config/environment.rb'
 class Scraper
 
   def self.scrape_list_page(list_url)
